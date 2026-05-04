@@ -1,0 +1,5 @@
+schmatics
+documentation
+
+# Clangd cache
+.cache
