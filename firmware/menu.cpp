@@ -9,6 +9,7 @@
 #include "wifi_scan.h"
 #include "wifi_analyzer.h"
 #include "device_check.h"
+#include "blemouse.h"
 
 // ================= FEATURE HANDLERS =================
 void runSystemInfoFeature();
@@ -29,7 +30,8 @@ const char *mainMenuItems[] = {
     "Wifi Analyzer",
     "System Info",
     "Device Check",
-    "Restart"
+    "Restart",
+    "Ble Mouse"
 };
 
 Menu mainMenu = {mainMenuItems, sizeof(mainMenuItems) / sizeof(mainMenuItems[0])};
@@ -184,6 +186,9 @@ void launchFeature()
                  delay(1000);
                  ESP.restart();
                 break;
+            case 9:
+                  ble_mouse_run();
+                    break;
         }
     }
     else if (currentMenu == &badusbMenu)
