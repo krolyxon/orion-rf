@@ -10,13 +10,7 @@
 #include "wifi_analyzer.h"
 #include "device_check.h"
 #include "blemouse.h"
-
-// ================= FEATURE HANDLERS =================
-void runSystemInfoFeature();
-void runRFCaptureFeature();
-void runBLEScanFeature();
-
-
+#include "sysinfo.h"
 
 // ================= MENU DATA =================
 
@@ -37,12 +31,52 @@ const char *mainMenuItems[] = {
 Menu mainMenu = {mainMenuItems, sizeof(mainMenuItems) / sizeof(mainMenuItems[0])};
 
 // BadUSB submenu
-const char *badusbItems[] = {
-    "Demo",
-    "Open CMD",
-    "Rickroll"};
+//const char *badusbItems[] = {
+//    "Demo",
+//    "Open CMD",
+//    "Rickroll"};
 
-Menu badusbMenu = {badusbItems, 3};
+  const char *badusbItems[] = {"DEMO",
+                             "KEYBOARD",
+                             "HID SCRIPT",
+                             "Open Notepad",
+                             "Open CMD",
+                             "Show IP",
+                             "Shutdown",
+                             "RickRoll",
+                             "Create Admin",
+                             "Disable Defender",
+                             "Open YouTube",
+                             "Lock PC",
+                             "Fake Update",
+                             "Endless Notepad",
+                             "Fake BSOD",
+                             "Flip Screen",
+                             "Matrix Effect",
+                             "I'm Watching U",
+                             "Open Google",
+                             "Open telegram",
+                             "Play Alarm Sound",
+                             "Endless CMD",
+                             "Type Gibberish",
+                             "Spam CAPSLOCK",
+                             "Open Calc",
+                             "Auto 'Hacked!'",
+                             "Turn Off Monitor",
+                             "Open RegEdit",
+                             "Kill Explorer",
+                             "Flash Screen",
+                             "Rename Desktop",
+                             "Toggle WiFi",
+                             "Auto Screenshot",
+                             "Spam Emojis",
+                             "Open Ctrl Panel",
+                             "Troll Wallpaper",
+                             "Open MS Paint",
+                             "Tab Switcher"};
+
+
+Menu badusbMenu = {badusbItems, sizeof(badusbItems) / sizeof(badusbItems[0])};
 
 // ================= MENU STATE =================
 
@@ -193,22 +227,7 @@ void launchFeature()
     }
     else if (currentMenu == &badusbMenu)
     {
-        switch (menuIndex)
-        {
-            case 0:
-                runBadUSBDemo();
-                break;
-
-            case 1:
-                Serial.println("Open CMD payload");
-                runBadUSBOpenCMD();
-                break;
-
-            case 2:
-                Serial.println("Rickroll payload");
-                runBadUSBRickroll();
-                break;
-        }
+        badUSBMenu(menuIndex);
     }
 
     insideFeature = false;

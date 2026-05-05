@@ -4,6 +4,7 @@
 
 #include <BLEDevice.h>
 #include <BLEScan.h>
+#include <BleMouse.h>
 
 #include <RF24.h>
 #include <nRF24L01.h>
@@ -29,6 +30,9 @@
 // ================= USB HID =================
 USBHIDKeyboard Keyboard;
 
+// ===== BLE MOUSE =====
+BleMouse bleMouse("Orion-RF", "Orion-RF", 100);
+
 
 RF24 radio1(CE1_PIN, CSN1_PIN);
 RF24 radio2(CE2_PIN, CSN2_PIN);
@@ -38,21 +42,21 @@ SPIClass *RADIO_SPI;
 
 
 // ================= BLE SCAN =================
-BLEScan *pBLEScan;
-
-
-void startBLEScan()
-{
-    BLEDevice::init("");
-
-    pBLEScan = BLEDevice::getScan();
-
-    pBLEScan->setActiveScan(true);
-
-    pBLEScan->start(5);
-
-    Serial.println("BLE scan complete");
-}
+//BLEScan *pBLEScan;
+//
+//
+//void startBLEScan()
+//{
+//    BLEDevice::init("");
+//
+//    pBLEScan = BLEDevice::getScan();
+//
+//    pBLEScan->setActiveScan(true);
+//
+//    pBLEScan->start(5);
+//
+//    Serial.println("BLE scan complete");
+//}
 
 // ================= SYSTEM INFO =================
 void printSystemUsage()
@@ -105,6 +109,10 @@ void setup()
 
     USB.begin();
     Keyboard.begin();
+
+    // Begin Ble mouse
+    bleMouse.begin();
+
 
     // NRF SPI safety
     pinMode(CSN1_PIN, OUTPUT);
