@@ -9,7 +9,7 @@
 #include "wifi_scan.h"
 #include "wifi_analyzer.h"
 #include "device_check.h"
-#include "blemouse.h"
+#include "ble_mouse.h"
 #include "sysinfo.h"
 #include "BleMouse.h"
 
@@ -36,7 +36,8 @@ Menu mainMenu = {mainMenuItems, sizeof(mainMenuItems) / sizeof(mainMenuItems[0])
 // NRF Tools menu
 const char *nrfToolsItems[] = {
     "BLE Jammer",
-    "Bluetooth Jammer"
+    "Bluetooth Jammer",
+    "Wifi Jammer"
 };
 
 Menu nrfToolsMenu = {nrfToolsItems, sizeof(nrfToolsItems) / sizeof(nrfToolsItems[0])};
@@ -225,15 +226,84 @@ void launchFeature()
             case 7:
                 device_check_run();
                 break;
-            case 8:
-                 u8g2.clearBuffer();
-                 u8g2.setFont(u8g2_font_6x13_tr);
-                 u8g2.drawStr(30, 30, "Restarting...");
-                 u8g2.sendBuffer();
-                 delay(1000);
-                 ESP.restart();
-                break;
-            case 9:
+           case 8:
+            {
+                  // wait for button release
+                 delay(200);
+
+                while (btnSelect())
+                    delay(10);
+                bool confirm = false;
+
+                while (1)
+                {
+                    u8g2.clearBuffer();
+                    u8g2.setFont(u8g2_font_6x13_tr);
+
+                    u8g2.drawStr(18, 18, "Restart Device?");
+
+                    if (confirm)
+                    {
+                        u8g2.drawBox(10, 35, 45, 15);
+                        u8g2.setDrawColor(0);
+                        u8g2.drawStr(20, 47, "YES");
+                        u8g2.setDrawColor(1);
+
+                        u8g2.drawStr(75, 47, "NO");
+                    }
+                    else
+                    {
+                        u8g2.drawStr(20, 47, "YES");
+
+                        u8g2.drawBox(65, 35, 45, 15);
+                        u8g2.setDrawColor(0);
+                        u8g2.drawStr(78, 47, "NO");
+                        u8g2.setDrawColor(1);
+                    }
+
+                    u8g2.sendBuffer();
+
+                    if (btnLeft() || btnUp())
+                    {
+                        confirm = true;
+                        delay(150);
+                    }
+
+                    if (btnRight() || btnDown())
+                    {
+                        confirm = false;
+                        delay(150);
+                    }
+
+                    if (btnSelect())
+                    {
+                        delay(150);
+
+                        if (confirm)
+                        {
+                            u8g2.clearBuffer();
+                            u8g2.drawStr(28, 30, "Restarting...");
+                            u8g2.sendBuffer();
+
+                            delay(1000);
+                            ESP.restart();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    if (btnBack())
+                    {
+                        delay(150);
+                        break;
+                    }
+                }
+            }
+        break;
+
+        case 9:
                   // Begin Ble mouse
                   bleMouse.begin();
                   ble_mouse_run();

@@ -6,3 +6,5 @@ bool btnUp();
 bool btnDown();
 bool btnSelect();
 bool btnBack();
+bool btnRight();
+bool btnLeft();
