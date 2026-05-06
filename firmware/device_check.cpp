@@ -16,10 +16,10 @@ extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;
 
 // ===== RESULTS =====
 struct DeviceStatus {
-    bool nrf_link = false;
     bool nrf1 = false;
     bool nrf2 = false;
-    bool cc1101 = false;
+    bool cc1101_1 = false;
+    bool cc1101_2 = false;
     bool oled = true;
     bool buttons = false;
 };
@@ -37,7 +37,7 @@ bool checkNRF(RF24 &radio)
 }
 
 // ===== CC1101 CHECK =====
-bool checkCC1101()
+bool checkCC1101_1()
 {
     ELECHOUSE_cc1101.setSpiPin(
         cc1101_SCK,
@@ -50,6 +50,21 @@ bool checkCC1101()
 
     return ELECHOUSE_cc1101.getCC1101();
 }
+
+bool checkCC1101_2()
+{
+    ELECHOUSE_cc1101.setSpiPin(
+        cc1101_SCK,
+        cc1101_MISO,
+        cc1101_MOSI,
+        CC1101_2_CS
+    );
+
+    delay(5); // important stabilization
+
+    return ELECHOUSE_cc1101.getCC1101();
+}
+
 
 // ===== BUTTON CHECK =====
 bool checkButtons()
@@ -82,8 +97,8 @@ bool checkButtons()
 const char* labels[MAX_ITEMS] = {
     "NRF1",
     "NRF2",
-    "LINK",
-    "CC1101",
+    "CC1101_1",
+    "CC1101_2",
     "BUTTONS",
     "OLED"
 };
@@ -97,8 +112,8 @@ void drawStatus(DeviceStatus &s)
 {
     values[0] = s.nrf1;
     values[1] = s.nrf2;
-    values[2] = s.nrf_link;
-    values[3] = s.cc1101;
+    values[2] = s.cc1101_1;
+    values[3] = s.cc1101_2;
     values[4] = s.buttons;
     values[5] = s.oled;
 
@@ -139,56 +154,6 @@ void drawStatus(DeviceStatus &s)
     u8g2.sendBuffer();
 }
 
-bool testNRFLink()
-{
-    const byte address[6] = "00001";
-    uint8_t payload = 0xAB;
-    uint8_t received = 0;
-
-    // --- init radios ---
-    if (!radio1.begin(RADIO_SPI)) return false;
-    if (!radio2.begin(RADIO_SPI)) return false;
-
-    radio1.setPALevel(RF24_PA_LOW);
-    radio2.setPALevel(RF24_PA_LOW);
-
-    radio1.setDataRate(RF24_1MBPS);
-    radio2.setDataRate(RF24_1MBPS);
-
-    radio1.setChannel(100);
-    radio2.setChannel(100);
-
-    radio1.setAutoAck(false);
-    radio2.setAutoAck(false);
-
-    // --- configure pipes ---
-    radio1.openWritingPipe(address);
-    radio2.openReadingPipe(0, address);
-
-    radio2.startListening();
-
-    delay(50);
-
-    // --- send ---
-    radio1.stopListening();
-    bool sent = radio1.write(&payload, sizeof(payload));
-
-    if (!sent) return false;
-
-    // --- receive ---
-    unsigned long start = millis();
-
-    while (millis() - start < 200)
-    {
-        if (radio2.available())
-        {
-            radio2.read(&received, sizeof(received));
-            return (received == payload);
-        }
-    }
-
-    return false;
-}
 
 // ===== MAIN =====
 void device_check_run()
@@ -199,12 +164,12 @@ void device_check_run()
 
     // NRF
     // NRF link test
-    status.nrf_link = testNRFLink();
     status.nrf1 = checkNRF(radio1);
     status.nrf2 = checkNRF(radio2);
 
     // CC1101
-    status.cc1101 = checkCC1101();
+    status.cc1101_1 = checkCC1101_1();
+    status.cc1101_2 = checkCC1101_1();
 
     // Buttons
     status.buttons = checkButtons();
