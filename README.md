@@ -29,6 +29,11 @@
   * HID-based payload execution
   * Emulate keyboard input for automation/testing
 
+- **Jammer ()**
+
+    - BLE/Bluetooth Jammer (Works with single NRF right now)
+
+
 ---
 
 ## 🧩 Project Status
@@ -39,6 +44,7 @@
 | WiFi Scan         | ✅ Working  |
 | Packet Analysis   | ✅ Working  |
 | BadUSB            | ✅ Working  |
+| Jammer            | Works Partially |
 | SD Card           | 🚧 WIP     |
 | RF Capture/Replay | 🚧 WIP     |
 | Emulator          | 🚧 WIP     |
