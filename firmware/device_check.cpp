@@ -37,34 +37,19 @@ bool checkNRF(RF24 &radio)
 }
 
 // ===== CC1101 CHECK =====
-bool checkCC1101_1()
+bool checkCC1101(uint8_t csPin)
 {
     ELECHOUSE_cc1101.setSpiPin(
         cc1101_SCK,
         cc1101_MISO,
         cc1101_MOSI,
-        CC1101_CS
+        csPin
     );
 
-    delay(5); // important stabilization
+    delay(5);
 
     return ELECHOUSE_cc1101.getCC1101();
 }
-
-bool checkCC1101_2()
-{
-    ELECHOUSE_cc1101.setSpiPin(
-        cc1101_SCK,
-        cc1101_MISO,
-        cc1101_MOSI,
-        CC1101_2_CS
-    );
-
-    delay(5); // important stabilization
-
-    return ELECHOUSE_cc1101.getCC1101();
-}
-
 
 // ===== BUTTON CHECK =====
 bool checkButtons()
@@ -81,7 +66,9 @@ bool checkButtons()
         if (!digitalRead(BTN_UP) ||
             !digitalRead(BTN_DOWN) ||
             !digitalRead(BTN_SELECT) ||
-            !digitalRead(BTN_BACK))
+            !digitalRead(BTN_BACK) ||
+            !digitalRead(BTN_RIGHT) ||
+            !digitalRead(BTN_LEFT))
         {
             return true;
         }
@@ -97,8 +84,8 @@ bool checkButtons()
 const char* labels[MAX_ITEMS] = {
     "NRF1",
     "NRF2",
-    "CC1101_1",
-    "CC1101_2",
+    "CC1101-1",
+    "CC1101-2",
     "BUTTONS",
     "OLED"
 };
@@ -116,6 +103,7 @@ void drawStatus(DeviceStatus &s)
     values[3] = s.cc1101_2;
     values[4] = s.buttons;
     values[5] = s.oled;
+
 
     u8g2.clearBuffer();
     u8g2.setFont(u8g2_font_6x10_tr);
@@ -154,7 +142,6 @@ void drawStatus(DeviceStatus &s)
     u8g2.sendBuffer();
 }
 
-
 // ===== MAIN =====
 void device_check_run()
 {
@@ -163,13 +150,12 @@ void device_check_run()
     Serial.println("Running device diagnostics...");
 
     // NRF
-    // NRF link test
     status.nrf1 = checkNRF(radio1);
     status.nrf2 = checkNRF(radio2);
 
     // CC1101
-    status.cc1101_1 = checkCC1101_1();
-    status.cc1101_2 = checkCC1101_1();
+    status.cc1101_1 = checkCC1101(CC1101_CS);
+    status.cc1101_2 = checkCC1101(CC1101_2_CS);
 
     // Buttons
     status.buttons = checkButtons();
