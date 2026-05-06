@@ -203,9 +203,7 @@ void ble_loop()
     }
     else if (btnBack())
     {
-        ble_scan();
-        selectedIndex = 0;
-        ble_drawMenu();
         lastPress = millis();
+        return;
     }
 }
