@@ -11,14 +11,16 @@
 #include "device_check.h"
 #include "blemouse.h"
 #include "sysinfo.h"
+#include "BleMouse.h"
 
 // ================= MENU DATA =================
+extern BleMouse bleMouse;
 
 // Root menu
 const char *mainMenuItems[] = {
     "BadUSB",
     "RF Capture",
-    "NRF Jammer",
+    "NRF Tools",
     "BLE Scan",
     "Wifi Scan",
     "Wifi Analyzer",
@@ -30,13 +32,18 @@ const char *mainMenuItems[] = {
 
 Menu mainMenu = {mainMenuItems, sizeof(mainMenuItems) / sizeof(mainMenuItems[0])};
 
-// BadUSB submenu
-//const char *badusbItems[] = {
-//    "Demo",
-//    "Open CMD",
-//    "Rickroll"};
 
-  const char *badusbItems[] = {"DEMO",
+// NRF Tools menu
+const char *nrfToolsItems[] = {
+    "BLE Jammer",
+    "Bluetooth Jammer"
+};
+
+Menu nrfToolsMenu = {nrfToolsItems, sizeof(nrfToolsItems) / sizeof(nrfToolsItems[0])};
+
+
+// BadUSB submenu
+const char *badusbItems[] = {"DEMO",
                              "KEYBOARD",
                              "HID SCRIPT",
                              "Open Notepad",
@@ -157,9 +164,15 @@ void launchFeature()
             printCapture();
             break;
             case 2:
-                startNRFJammer();
+                // startNRFJammer();
+                //startBleJammer();
+                //startBluetoothJammer();
+                currentMenu = &nrfToolsMenu;
+                menuIndex = 0;
+                menuOffset = 0;
                 break;
 
+                break;
             case 3:
                 ble_scan();
                 ble_drawMenu();
@@ -221,6 +234,8 @@ void launchFeature()
                  ESP.restart();
                 break;
             case 9:
+                  // Begin Ble mouse
+                  bleMouse.begin();
                   ble_mouse_run();
                     break;
         }
@@ -228,6 +243,8 @@ void launchFeature()
     else if (currentMenu == &badusbMenu)
     {
         badUSBMenu(menuIndex);
+    } else if (currentMenu == &nrfToolsMenu) {
+        NRFToolsMenu(menuIndex);
     }
 
     insideFeature = false;

@@ -5,10 +5,9 @@
 // Initialization
 void initNRF(RF24 &radio);
 
-// Jammer modes
-void startNRFJammer();        // dual-radio sweep jammer
-void stopNRFJammer();         // (optional, for future)
+void startBluetoothJammer();
+void startBleJammer();
 
-// Advanced (later)
-void nrfJammerSweep();        // internal, but can expose if needed
-void nrfSetChannel(uint8_t ch);
+void startJammer(const char* name, const byte* channels, size_t channelCount);
+
+void NRFToolsMenu(int index);
