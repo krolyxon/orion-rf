@@ -213,29 +213,29 @@ void device_check_run()
 
     Serial.println("Diagnostics complete");
 
-while (1)
+    while (1)
 {
-drawStatus(status);
+    drawStatus(status);
 
-if (btnUp())
-{
-selectedIndex--;
-if (selectedIndex < 0) selectedIndex = MAX_ITEMS - 1;
-delay(150);
-}
+    if (btnUp())
+    {
+        selectedIndex--;
+        if (selectedIndex < 0) selectedIndex = MAX_ITEMS - 1;
+        delay(150);
+    }
 
-if (btnDown())
-{
-selectedIndex++;
-if (selectedIndex >= MAX_ITEMS) selectedIndex = 0;
-delay(150);
-}
+    if (btnDown())
+    {
+        selectedIndex++;
+        if (selectedIndex >= MAX_ITEMS) selectedIndex = 0;
+        delay(150);
+    }
 
-if (btnBack())
-{
-delay(150);
-break;
-}
+    if (btnBack())
+    {
+        delay(150);
+        break;
+    }
 }}
 
 

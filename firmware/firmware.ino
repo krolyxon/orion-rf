@@ -39,24 +39,16 @@ RF24 radio2(CE2_PIN, CSN2_PIN);
 SPIClass *RADIO_SPI;
 
 
+void deactivateNRF1() {
+  digitalWrite(CSN1_PIN, HIGH);
+  digitalWrite(CE1_PIN, LOW);
+}
 
+void deactivateNRF2() {
+  digitalWrite(CSN2_PIN, HIGH);
+  digitalWrite(CE2_PIN, LOW);
+}
 
-// ================= BLE SCAN =================
-//BLEScan *pBLEScan;
-//
-//
-//void startBLEScan()
-//{
-//    BLEDevice::init("");
-//
-//    pBLEScan = BLEDevice::getScan();
-//
-//    pBLEScan->setActiveScan(true);
-//
-//    pBLEScan->start(5);
-//
-//    Serial.println("BLE scan complete");
-//}
 
 // ================= SYSTEM INFO =================
 void printSystemUsage()
@@ -110,16 +102,16 @@ void setup()
     USB.begin();
     Keyboard.begin();
 
-    // Begin Ble mouse
-    bleMouse.begin();
 
 
     // NRF SPI safety
-    pinMode(CSN1_PIN, OUTPUT);
-    digitalWrite(CSN1_PIN, HIGH);
+    //pinMode(CSN1_PIN, OUTPUT);
+    //digitalWrite(CSN1_PIN, HIGH);
 
-    pinMode(CSN2_PIN, OUTPUT);
-    digitalWrite(CSN2_PIN, HIGH);
+    //pinMode(CSN2_PIN, OUTPUT);
+    //digitalWrite(CSN2_PIN, HIGH);
+    deactivateNRF1();
+    deactivateNRF2();
 
     RADIO_SPI = new SPIClass(FSPI);
     RADIO_SPI->begin(NRF_SCK, NRF_MISO, NRF_MOSI);
