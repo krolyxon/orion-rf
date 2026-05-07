@@ -18,6 +18,12 @@ const byte bluetoothChannels[] = {
     74, 76, 78, 80
 };
 
+const byte wifiChannels[] = {
+    12, 17, 22, 27, 32,
+    37, 42, 47, 52, 57,
+    62, 67, 72
+};
+
 void initNRF(RF24 &radio)
 {
     if (!radio.begin(RADIO_SPI)) {
@@ -119,29 +125,66 @@ void startJammer(const char* name, const byte* channels, size_t channelCount)
     const char payload[] = "xxxxxxxxxxxxxxxx";
 
     u8g2.clearBuffer();
-    u8g2.drawStr(0, 10, "Jamming:");
-    u8g2.setCursor(60, 10);
-    u8g2.print(name);
+    u8g2.setFont(u8g2_font_6x10_tr);
+    u8g2.drawStr(0, 15, "NRF24 Jammer");
+    u8g2.drawStr(0, 35, name);
+    u8g2.drawStr(0, 55, "BACK = Exit");
     u8g2.sendBuffer();
 
-    while (true)
-    {
-        for (size_t i = 0; i < channelCount; i++)
-        {
-            radio1.setChannel(channels[i]);
-            radio1.write(&payload, sizeof(payload));
+   while (true)
+   {
+       for (size_t i = 0; i < channelCount; i++)
+       {
+           //radio1.setChannel(channels[i]);
+           //radio1.write(&payload, sizeof(payload));
 
-            // Optional second NRF
-            // radio2.setChannel(channels[i]);
-            // radio2.write(&payload, sizeof(payload));
-        }
+           // Optional second NRF
+           // radio2.setChannel(channels[i]);
+           // radio2.write(&payload, sizeof(payload));
 
-        if (btnBack())
-        {
-            Serial.println("Jammer stopped");
-            return;
-        }
-    }
+
+           radio1.setChannel(channels[i]);
+           radio2.setChannel(channels[(i + 1) % channelCount]);
+
+           radio1.writeFast(&payload, sizeof(payload));
+           radio2.writeFast(&payload, sizeof(payload));
+       }
+
+       if (btnBack())
+       {
+           Serial.println("Jammer stopped");
+           radio1.powerDown();
+           radio2.powerDown();
+           return;
+       }
+   }
+
+    //while (true) {
+    //for (size_t i = 0; i < channelCount; i++)
+    //{
+    //    radio1.setChannel(channels[i]);
+    //    radio2.setChannel(channels[(i + 1) % channelCount]);
+
+    //    radio1.writeFast(&payload, sizeof(payload));
+    //    radio2.writeFast(&payload, sizeof(payload));
+
+    //    radio1.txStandBy(1);
+    //    radio2.txStandBy(1);
+
+    //    delayMicroseconds(200);
+    //}
+
+
+    //if (btnBack())
+    //{
+    //    Serial.println("Jammer stopped");
+
+    //    radio1.powerDown();
+    //    radio2.powerDown();
+
+    //    return;
+    //}
+//}
 }
 
 void NRFToolsMenu(int index) {
@@ -152,7 +195,7 @@ void NRFToolsMenu(int index) {
             startJammer(
                 "BLE",
                 bleChannels,
-                sizeof(bleChannels)
+                sizeof(bleChannels) / sizeof(bleChannels[0])
             );
 
             break;
@@ -162,8 +205,17 @@ void NRFToolsMenu(int index) {
             startJammer(
                 "Bluetooth",
                 bluetoothChannels,
-                sizeof(bluetoothChannels)
+                sizeof(bluetoothChannels) / sizeof(bluetoothChannels[0])
             );
             break;
+
+        case 2:
+            startJammer(
+                "WiFi",
+                wifiChannels,
+                sizeof(wifiChannels) / sizeof(wifiChannels[0])
+            );
+            break;
+
     }
 }
