@@ -21,7 +21,7 @@
 
 
 #include "ui/display.h"
-#include "buttons.h"
+#include "utils/buttons.h"
 #include "ui/menu.h"
 
 #include "config.h"

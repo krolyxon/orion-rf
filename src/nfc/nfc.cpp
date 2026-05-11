@@ -5,8 +5,8 @@
 #include <Adafruit_PN532.h>
 
 #include "ui/display.h"
-#include "buttons.h"
-#include "config.h"
+#include "../utils/buttons.h"
+#include "../config.h"
 
 #define PN532_IRQ   -1
 #define PN532_RESET -1

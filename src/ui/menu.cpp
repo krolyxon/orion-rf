@@ -1,18 +1,18 @@
 #include <Arduino.h>
 #include "menu.h"
 #include "display.h"
-#include "buttons.h"
-#include "badusb.h"
+#include "utils/buttons.h"
+#include "hid/badusb.h"
 #include "rf/nrf24.h"
 #include "rf/cc1101.h"
-#include "blescanner.h"
 #include "wifi/wifi_scan.h"
 #include "wifi/wifi_analyzer.h"
-#include "device_check.h"
-#include "ble_mouse.h"
-#include "sysinfo.h"
+#include "utils/device_check.h"
+#include "bluetooth/ble_mouse.h"
+#include "bluetooth/blescanner.h"
+#include "utils/sysinfo.h"
 #include "BleMouse.h"
-#include "nfc.h"
+#include "nfc/nfc.h"
 
 // ================= MENU DATA =================
 extern BleMouse bleMouse;

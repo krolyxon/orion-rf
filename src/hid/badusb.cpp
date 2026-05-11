@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <USBHIDKeyboard.h>
-#include "ui/display.h"
+#include "../ui/display.h"
 
 extern USBHIDKeyboard Keyboard;
 

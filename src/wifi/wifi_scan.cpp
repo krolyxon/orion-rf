@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include "../ui/display.h"
-#include "../buttons.h"
+#include "../utils/buttons.h"
 
 #define MAX_NETWORKS 30
 

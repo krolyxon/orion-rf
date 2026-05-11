@@ -2,7 +2,7 @@
 #include <RF24.h>
 #include "nrf24.h"
 #include "../ui/display.h"
-#include "../buttons.h"
+#include "../utils/buttons.h"
 #define JAM_DURATION 500
 
 extern SPIClass *RADIO_SPI;

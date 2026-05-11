@@ -2,11 +2,11 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <RF24.h>
-#include "libs/ELECHOUSE_CC1101_SRC_DRV.h"
+#include "../libs/ELECHOUSE_CC1101_SRC_DRV.h"
 
-#include "ui/display.h"
+#include "../ui/display.h"
 #include "buttons.h"
-#include "config.h"
+#include "../config.h"
 
 // ===== EXTERNALS =====
 extern RF24 radio1;

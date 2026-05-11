@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <BleMouse.h>
-#include "badusb.h"
-#include "config.h"
+#include "../hid/badusb.h"
+#include "../config.h"
 
-#include "buttons.h"
+#include "../utils/buttons.h"
 #include "ui/display.h"
 
 // ===== BLE MOUSE =====

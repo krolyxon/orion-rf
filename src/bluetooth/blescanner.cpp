@@ -5,8 +5,8 @@
 #include <vector>
 
 #include "ui/display.h"
-#include "buttons.h"
-#include "config.h"
+#include "../utils/buttons.h"
+#include "../config.h"
 
 // ===== DEVICE STRUCT =====
 struct BLEDeviceInfo {
