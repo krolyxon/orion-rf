@@ -1,128 +1,56 @@
-# 🛰️ Orion RF (WIP)
+# Orion RF
 
-**Orion RF** is a portable RF & wireless experimentation toolkit built for the ESP32 platform with NRF24 support.
+Orion RF is a portable RF and wireless toolkit built on the ESP32 platform with NRF24 and CC1101 support.
 
-> ⚠️ This project is currently under active development. Some features are experimental, incomplete, or may change frequently.
+## Features
 
----
+### Wireless
+- BLE scanning
+- WiFi scanning
+- WiFi analyzer
+- RF capture (WIP)
+- RF replay (planned)
 
-# 🚀 Current Features
+### NRF24
+- BLE interference testing
+- Bluetooth interference testing
+- WiFi interference testing
 
-## 📡 Wireless Tools
+### HID
+- BadUSB keyboard emulation
+- BLE mouse emulation
 
-### BLE Scan
-- Discover nearby Bluetooth Low Energy devices
-- View MAC address, RSSI, and device information
-- Real-time scanning interface
+### Utilities
+- System information
+- Hardware diagnostics
+- Device restart
 
-### WiFi Scan
-- Scan nearby WiFi access points
-- View:
-  - SSID
-  - Signal strength (RSSI)
-  - Channel
-  - Encryption type
-
-### WiFi Analyzer
-- Analyze surrounding WiFi activity
-- Useful for understanding channel congestion and wireless environments
-
-### RF Capture *(WIP)*
-- Experimental RF packet capture functionality
-- Replay support planned
-
----
-
-# 📻 NRF24 Tools
-
-### BLE Jammer
-- NRF24-based BLE interference testing
-- Functional
-
-### Bluetooth Jammer
-- NRF24-based Bluetooth interference testing
-- Functional
-
-### WiFi Jammer
-- NRF24-based WiFi interference testing
-- Able to jam 2.4Ghz wifi connections (Not 5G)
-
----
-
-# ⌨️ BadUSB
-
-- HID keyboard emulation
-- Execute automated payloads/scripts
-- Useful for testing and automation workflows
-
----
-
-# 🖱️ BLE Mouse
-
-- ESP32-based Bluetooth mouse emulation
-- Experimental HID functionality
-
----
-
-# 🔧 System Utilities
-
-### System Info
-- Display device/system information
-- Useful for debugging and diagnostics
-
-### Device Check
-- Verify connected peripherals/modules
-- Hardware diagnostics utility
-
-### Restart
-- Quick device reboot option from UI
-
----
-
-# 🧩 Project Status
-
-| Feature              | Status            |
-| -------------------- | ----------------- |
-| BLE Scan             | ✅ Working        |
-| WiFi Scan            | ✅ Working        |
-| WiFi Analyzer        | ✅ Working        |
-| BadUSB               | ✅ Working        |
-| BLE Mouse            | ✅ Working        |
-| BLE Jammer           | ✅ Working        |
-| Bluetooth Jammer     | ✅ Working        |
-| WiFi Jammer          | ⚠️ Experimental   |
-| RF Capture           | 🚧 WIP            |
-| RF Replay            | 🚧 WIP            |
-| SD Card Support      | 🚧 Planned        |
-| Emulator             | 🚧 Planned        |
-| NFC                  | 🚧 Planned        |
-
----
-
-# 🛠️ Hardware
-
-- 1 x ESP32-S3
-- 2 x NRF24L01 Modules
-- 2 x CC1101 Modules
-- 1 x OLED Display
+## Hardware
+- ESP32-S3 N16R8
+- 2x NRF24L01
+- 2x CC1101
+- OLED display
 - Battery-powered portable setup
 
----
+## Status
 
-# 📌 Notes
+| Feature | Status |
+|---|---|
+| BLE Scan | Working |
+| WiFi Scan | Working |
+| WiFi Analyzer | Working |
+| BadUSB | Working |
+| BLE Mouse | Working |
+| BLE Jammer | Working |
+| Bluetooth Jammer | Working |
+| WiFi Jammer | Experimental |
+| RF Capture | WIP |
+| RF Replay | WIP |
+| SD Card Support | Planned |
+| Emulator | Planned |
+| NFC | WIP |
 
-- Designed primarily for learning, experimentation, and embedded RF research
-- Optimized for portable usage
-- UI-driven navigation system
 
----
+## Disclaimer
 
-# ⚖️ Disclaimer
-
-This project is intended for:
-- Educational purposes
-- RF experimentation
-- Hardware research
-- Authorized security testing
-
-The authors are not responsible for misuse or illegal operation of this project.
+Use responsibly and only where authorized.
