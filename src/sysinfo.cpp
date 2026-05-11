@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "display.h"
+#include "ui/display.h"
 #include "buttons.h"
 #include <esp_chip_info.h>
 #include <esp_heap_caps.h>

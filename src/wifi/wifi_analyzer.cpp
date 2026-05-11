@@ -2,8 +2,8 @@
 #include <WiFi.h>
 #include <esp_wifi.h>
 
-#include "display.h"
-#include "buttons.h"
+#include "../ui/display.h"
+#include "../buttons.h"
 
 // ===== CONFIG =====
 #define GRAPH_WIDTH     128

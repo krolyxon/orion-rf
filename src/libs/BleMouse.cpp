@@ -140,7 +140,7 @@ void BleMouse::setBatteryLevel(uint8_t level) {
 
 void BleMouse::taskServer(void* pvParameter) {
   BleMouse* bleMouseInstance = (BleMouse *) pvParameter; //static_cast<BleMouse *>(pvParameter);
-  BLEDevice::init(String(bleMouseInstance->deviceName.c_str()));
+  BLEDevice::init(std::string(bleMouseInstance->deviceName.c_str()));
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(bleMouseInstance->connectionStatus);
 
@@ -148,7 +148,7 @@ void BleMouse::taskServer(void* pvParameter) {
   bleMouseInstance->inputMouse = bleMouseInstance->hid->inputReport(0); // <-- input REPORTID from report map
   bleMouseInstance->connectionStatus->inputMouse = bleMouseInstance->inputMouse;
 
-  bleMouseInstance->hid->manufacturer()->setValue(String(bleMouseInstance->deviceManufacturer.c_str()));
+  bleMouseInstance->hid->manufacturer()->setValue(std::string(bleMouseInstance->deviceManufacturer.c_str()));
 
   bleMouseInstance->hid->pnp(0x02, 0xe502, 0xa111, 0x0210);
   bleMouseInstance->hid->hidInfo(0x00,0x02);

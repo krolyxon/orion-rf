@@ -19,7 +19,7 @@
 // CC1101 via FSPI
 #define cc1101_SCK 15
 #define cc1101_MISO 3
-#define cc1101_MOSI 46
+#define cc1101_MOSI 35
 
 //////////////cc1101(1)//////////
 #define CC1101_CS 45

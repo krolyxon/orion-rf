@@ -3,3 +3,75 @@ documentation
 
 # Clangd cache
 .cache
+
+
+# Compiled object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.a
+*.lib
+
+# Shared objects
+*.so
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+
+# PlatformIO
+.pio/
+.piolibdeps/
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Environment files
+.env
+.env.*
+
+# Python cache (if using scripts/tools)
+__pycache__/
+*.pyc
+
+# Arduino IDE leftovers
+*.ino.cpp
+
+# Build directories
+build/
+dist/
+
+# Coverage
+coverage/
+*.gcda
+*.gcno
+*.gcov

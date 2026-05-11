@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <RF24.h>
-#include "buttons.h"
 #include "nrf24.h"
-#include "display.h"
+#include "../ui/display.h"
+#include "../buttons.h"
 #define JAM_DURATION 500
 
 extern SPIClass *RADIO_SPI;

@@ -4,12 +4,12 @@
 
 #include <BLEDevice.h>
 #include <BLEScan.h>
-#include <BleMouse.h>
+#include "libs/BleMouse.h"
 
 #include <RF24.h>
 #include <nRF24L01.h>
 
-#include "ELECHOUSE_CC1101_SRC_DRV.h"
+#include "libs/ELECHOUSE_CC1101_SRC_DRV.h"
 
 #include <WiFi.h>
 #include <esp_wifi.h>
@@ -20,12 +20,12 @@
 #include <SPI.h>
 
 
-#include "display.h"
+#include "ui/display.h"
 #include "buttons.h"
-#include "menu.h"
+#include "ui/menu.h"
 
 #include "config.h"
-#include "cc1101.h"
+#include "rf/cc1101.h"
 
 // ================= USB HID =================
 USBHIDKeyboard Keyboard;
@@ -115,6 +115,20 @@ void setup()
 
     RADIO_SPI = new SPIClass(FSPI);
     RADIO_SPI->begin(NRF_SCK, NRF_MISO, NRF_MOSI);
+
+    // ===== CC1101 SPI INIT =====
+    //SPI.begin(
+    //    cc1101_SCK,
+    //    cc1101_MISO,
+    //    cc1101_MOSI,
+    //    CC1101_CS
+    //);
+
+    //pinMode(CC1101_CS, OUTPUT);
+    //pinMode(CC1101_2_CS, OUTPUT);
+
+    //digitalWrite(CC1101_CS, HIGH);
+    //digitalWrite(CC1101_2_CS, HIGH);
 
     printSystemUsage();
 

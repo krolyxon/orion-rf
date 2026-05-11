@@ -2,9 +2,9 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <RF24.h>
-#include "ELECHOUSE_CC1101_SRC_DRV.h"
+#include "libs/ELECHOUSE_CC1101_SRC_DRV.h"
 
-#include "display.h"
+#include "ui/display.h"
 #include "buttons.h"
 #include "config.h"
 
@@ -25,13 +25,26 @@ struct DeviceStatus {
 };
 
 // ===== NRF CHECK =====
+//bool checkNRF(RF24 &radio)
+//{
+//    // safer: only init if needed
+//    if (!radio.isChipConnected()) {
+//        if (!radio.begin(RADIO_SPI))
+//            return false;
+//    }
+//
+//    return radio.isChipConnected();
+//}
+
 bool checkNRF(RF24 &radio)
 {
-    // safer: only init if needed
-    if (!radio.isChipConnected()) {
-        if (!radio.begin(RADIO_SPI))
-            return false;
-    }
+    radio.powerDown();
+    delay(5);
+
+    if (!radio.begin(RADIO_SPI))
+        return false;
+
+    delay(5);
 
     return radio.isChipConnected();
 }
@@ -156,6 +169,7 @@ void device_check_run()
     // CC1101
     status.cc1101_1 = checkCC1101(CC1101_CS);
     status.cc1101_2 = checkCC1101(CC1101_2_CS);
+    //status.cc1101_1 = status.cc1101_2 = false;
 
     // Buttons
     status.buttons = checkButtons();

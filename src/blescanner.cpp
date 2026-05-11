@@ -4,7 +4,7 @@
 #include <BLEAdvertisedDevice.h>
 #include <vector>
 
-#include "display.h"
+#include "ui/display.h"
 #include "buttons.h"
 #include "config.h"
 
@@ -26,7 +26,7 @@ class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks {
     void onResult(BLEAdvertisedDevice advertisedDevice) override {
         BLEDeviceInfo dev;
 
-        String tempName = advertisedDevice.getName();
+        String tempName = advertisedDevice.getName().c_str();
 
         if (tempName.length() == 0 && advertisedDevice.haveServiceData()) {
             tempName = advertisedDevice.getServiceData().c_str();

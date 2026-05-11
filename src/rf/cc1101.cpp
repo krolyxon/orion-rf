@@ -1,7 +1,8 @@
 #include <Arduino.h>
-#include "ELECHOUSE_CC1101_SRC_DRV.h"
+#include "../libs/ELECHOUSE_CC1101_SRC_DRV.h"
 #include "cc1101.h"
-#include "config.h"
+#include "../config.h"
+#include "SPI.h"
 
 // ===== CONFIG =====
 #define RAW_BUF_MAX 512
@@ -32,7 +33,7 @@ void IRAM_ATTR pulseISR()
 
     unsigned long duration = now - lastEdgeTime;
 
-    if (duration < 50) return;
+    if (duration < 150) return;
 
     captureBuffer[pulseIndex++] = duration;
     lastEdgeTime = now;
@@ -44,7 +45,7 @@ void setupOOKMode()
     ELECHOUSE_cc1101.SetRx();
     ELECHOUSE_cc1101.setMHZ(currentFreq);
 
-    ELECHOUSE_cc1101.setModulation(0); // ASK/OOK
+    ELECHOUSE_cc1101.setModulation(2); // ASK/OOK
     ELECHOUSE_cc1101.setDRate(dataRate);
     ELECHOUSE_cc1101.setDeviation(0);
     ELECHOUSE_cc1101.setRxBW(rxBW);
@@ -53,14 +54,30 @@ void setupOOKMode()
 }
 
 // ===== INIT (LAZY, SAFE) =====
+// ================= CC1101 INIT =================
 bool initCC1101()
 {
-    if (cc1101Inited)
-        return true;
+    Serial.println();
+    Serial.println("===== CC1101 INIT =====");
 
-    Serial.println("Initializing CC1101...");
+    // ===== SPI =====
+    SPI.begin(
+        cc1101_SCK,
+        cc1101_MISO,
+        cc1101_MOSI,
+        CC1101_CS
+    );
 
-    // IMPORTANT: no detachInterrupt here (causes crash if not installed)
+    pinMode(CC1101_CS, OUTPUT);
+    digitalWrite(CC1101_CS, HIGH);
+
+    delay(100);
+
+    // ===== GDO =====
+    ELECHOUSE_cc1101.setGDO(
+        CC1101_GDO0,
+        -1
+    );
 
     ELECHOUSE_cc1101.setSpiPin(
         cc1101_SCK,
@@ -69,7 +86,8 @@ bool initCC1101()
         CC1101_CS
     );
 
-    ELECHOUSE_cc1101.setGDO(CC1101_GDO0, CC1101_GDO2);
+    // ===== DETECT =====
+    Serial.println("Checking chip...");
 
     if (!ELECHOUSE_cc1101.getCC1101())
     {
@@ -77,19 +95,42 @@ bool initCC1101()
         return false;
     }
 
-    delay(10); // let SPI settle
+    Serial.println("✅ CC1101 FOUND");
 
-    ELECHOUSE_cc1101.Init();   // THIS WAS YOUR FREEZE POINT
-    setupOOKMode();
+    // ===== IMPORTANT =====
+    // DO NOT CALL Init()
+    // it freezes on some ESP32-S3 setups
+
+    // ===== MANUAL CONFIG =====
+    ELECHOUSE_cc1101.setMHZ(currentFreq);
+
+    // 2 = ASK/OOK
+    ELECHOUSE_cc1101.setModulation(2);
+
+    ELECHOUSE_cc1101.setDRate(dataRate);
+
+    ELECHOUSE_cc1101.setRxBW(rxBW);
+
+    ELECHOUSE_cc1101.setDeviation(0);
+
+    // disable sync requirement
+    ELECHOUSE_cc1101.setSyncMode(0);
+
+    ELECHOUSE_cc1101.setPA(powerLevel);
+
+    // async serial mode
+    ELECHOUSE_cc1101.setCCMode(0);
+
+    // enter RX
+    ELECHOUSE_cc1101.SetRx();
 
     pinMode(CC1101_GDO0, INPUT);
 
-    Serial.println("✅ CC1101 READY");
+    Serial.println("✅ RX MODE READY");
 
     cc1101Inited = true;
     return true;
 }
-
 // ===== CAPTURE CONTROL =====
 void startCapture()
 {
@@ -103,7 +144,7 @@ void startCapture()
         CHANGE
     );
 
-    Serial.println("Capture started");
+    Serial.println("Looking for RF... ");
 }
 
 bool isCC1101Ready() {
@@ -131,20 +172,34 @@ void printCapture()
 }
 
 
-// ===== REPLAY =====
+// ================= REPLAY =================
 void replaySignal()
 {
-    Serial.println("Replaying...");
+    Serial.println();
+    Serial.println("Replaying signal...");
+
+    stopCapture();
 
     ELECHOUSE_cc1101.SetTx();
+
     pinMode(CC1101_GDO0, OUTPUT);
 
     for (int i = 0; i < pulseIndex; i++)
     {
-        digitalWrite(CC1101_GDO0, (i % 2 == 0) ? HIGH : LOW);
+        digitalWrite(
+            CC1101_GDO0,
+            (i % 2 == 0) ? HIGH : LOW
+        );
+
         delayMicroseconds(captureBuffer[i]);
     }
 
     digitalWrite(CC1101_GDO0, LOW);
+
     ELECHOUSE_cc1101.SetRx();
+
+    pinMode(CC1101_GDO0, INPUT);
+
+    Serial.println("Replay complete");
 }
+

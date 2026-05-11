@@ -4,7 +4,7 @@
 #include "config.h"
 
 #include "buttons.h"
-#include "display.h"
+#include "ui/display.h"
 
 // ===== BLE MOUSE =====
 // BleMouse bleMouse("Orion-RF", "Orion-RF", 100);
