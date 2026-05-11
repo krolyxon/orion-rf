@@ -12,6 +12,7 @@
 #include "ble_mouse.h"
 #include "sysinfo.h"
 #include "BleMouse.h"
+#include "nfc.h"
 
 // ================= MENU DATA =================
 extern BleMouse bleMouse;
@@ -27,7 +28,8 @@ const char *mainMenuItems[] = {
     "System Info",
     "Device Check",
     "Restart",
-    "Ble Mouse"
+    "Ble Mouse",
+    "NFC Tools"
 };
 
 Menu mainMenu = {mainMenuItems, sizeof(mainMenuItems) / sizeof(mainMenuItems[0])};
@@ -37,7 +39,12 @@ Menu mainMenu = {mainMenuItems, sizeof(mainMenuItems) / sizeof(mainMenuItems[0])
 const char *nrfToolsItems[] = {
     "BLE Jammer",
     "Bluetooth Jammer",
-    "Wifi Jammer"
+    "Wifi Jammer",
+    "USB Wireless",
+    "Video TX",
+    "Zigbee",
+    "RC"
+
 };
 
 Menu nrfToolsMenu = {nrfToolsItems, sizeof(nrfToolsItems) / sizeof(nrfToolsItems[0])};
@@ -151,10 +158,10 @@ void launchFeature()
 
             case 1:
             if (!isCC1101Ready()) {
-            if (!initCC1101()) {
-            Serial.println("CC1101 failed");
-            return;
-            }
+                if (!initCC1101()) {
+                    Serial.println("CC1101 failed");
+                    return;
+                }
             }
 
             Serial.println("Ready to capture...");
@@ -163,7 +170,10 @@ void launchFeature()
             delay(5000);
             stopCapture();
             printCapture();
+            delay(5000);
+            replaySignal();
             break;
+
             case 2:
                 // startNRFJammer();
                 //startBleJammer();
@@ -307,6 +317,9 @@ void launchFeature()
                   // Begin Ble mouse
                   bleMouse.begin();
                   ble_mouse_run();
+                    break;
+        case 10:
+                    pn532_scan_loop();
                     break;
         }
     }

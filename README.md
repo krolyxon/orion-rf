@@ -45,9 +45,7 @@
 
 ### WiFi Jammer
 - NRF24-based WiFi interference testing
-- Experimental
-
-> ⚠️ These tools are intended strictly for wireless research, testing, and educational purposes in authorized environments.
+- Able to jam 2.4Ghz wifi connections (Not 5G)
 
 ---
 
