@@ -50,46 +50,22 @@ const char *nrfToolsItems[] = {
 Menu nrfToolsMenu = {nrfToolsItems, sizeof(nrfToolsItems) / sizeof(nrfToolsItems[0])};
 
 
-// BadUSB submenu
-const char *badusbItems[] = {"DEMO",
-                             "KEYBOARD",
-                             "HID SCRIPT",
-                             "Open Notepad",
-                             "Open CMD",
-                             "Show IP",
-                             "Shutdown",
-                             "RickRoll",
-                             "Create Admin",
-                             "Disable Defender",
-                             "Open YouTube",
-                             "Lock PC",
-                             "Fake Update",
-                             "Endless Notepad",
-                             "Fake BSOD",
-                             "Flip Screen",
-                             "Matrix Effect",
-                             "I'm Watching U",
-                             "Open Google",
-                             "Open telegram",
-                             "Play Alarm Sound",
-                             "Endless CMD",
-                             "Type Gibberish",
-                             "Spam CAPSLOCK",
-                             "Open Calc",
-                             "Auto 'Hacked!'",
-                             "Turn Off Monitor",
-                             "Open RegEdit",
-                             "Kill Explorer",
-                             "Flash Screen",
-                             "Rename Desktop",
-                             "Toggle WiFi",
-                             "Auto Screenshot",
-                             "Spam Emojis",
-                             "Open Ctrl Panel",
-                             "Troll Wallpaper",
-                             "Open MS Paint",
-                             "Tab Switcher"};
-
+const char *badusbItems[] = {
+    "ORION Demo",
+    "RickRoll",
+    "Matrix Rain",
+    "Fake Terminal",
+    "Wifi Password Extractor",
+    "Fake Update",
+    "Fake BSOD",
+    "Glitch Screen",
+    "ASCII Spam",
+    "Hacker Typer",
+    "PWN Reverse shell",
+    "Phishing attack",
+    "Desktop Ghost",
+    "System Stresser"
+};
 
 Menu badusbMenu = {badusbItems, sizeof(badusbItems) / sizeof(badusbItems[0])};
 
@@ -156,24 +132,9 @@ void launchFeature()
                 menuOffset = 0;
                 break;
 
-            case 1:
-            if (!isCC1101Ready()) {
-                if (!initCC1101()) {
-                    Serial.println("CC1101 failed");
-                    return;
-                }
-            }
-
-            Serial.println("Ready to capture...");
-
-            startCapture();
-            delay(5000);
-            stopCapture();
-            printCapture();
-            delay(5000);
-            replaySignal();
+           case 1:
+            handleMenu();
             break;
-
             case 2:
                 // startNRFJammer();
                 //startBleJammer();
