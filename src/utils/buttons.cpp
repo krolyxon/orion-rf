@@ -1,15 +1,14 @@
 #include "buttons.h"
-#include <Arduino.h>
 #include "../config.h"
+#include <Arduino.h>
 
-void buttonsInit()
-{
-    pinMode(BTN_UP, INPUT_PULLUP);
-    pinMode(BTN_DOWN, INPUT_PULLUP);
-    pinMode(BTN_SELECT, INPUT_PULLUP);
-    pinMode(BTN_BACK, INPUT_PULLUP);
-    pinMode(BTN_RIGHT, INPUT_PULLUP);
-    pinMode(BTN_LEFT, INPUT_PULLUP);
+void buttonsInit() {
+  pinMode(BTN_UP, INPUT_PULLUP);
+  pinMode(BTN_DOWN, INPUT_PULLUP);
+  pinMode(BTN_SELECT, INPUT_PULLUP);
+  pinMode(BTN_BACK, INPUT_PULLUP);
+  pinMode(BTN_RIGHT, INPUT_PULLUP);
+  pinMode(BTN_LEFT, INPUT_PULLUP);
 }
 
 bool btnUp() { return !digitalRead(BTN_UP); }

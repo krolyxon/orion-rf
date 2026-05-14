@@ -27,8 +27,11 @@ Orion RF is a portable RF and wireless toolkit built on the ESP32 platform with 
 
 ## Hardware
 - ESP32-S3 N16R8
-- 2x NRF24L01
-- 2x CC1101
+- 2x NRF24L01 Module
+- 2x CC1101 Module
+- PN532 NFC Module
+- MicroSD card Module
+- TP4056 Charging Module
 - OLED display
 - Battery-powered portable setup
 
@@ -43,7 +46,7 @@ Orion RF is a portable RF and wireless toolkit built on the ESP32 platform with 
 | BLE Mouse | Working |
 | BLE Jammer | Working |
 | Bluetooth Jammer | Working |
-| WiFi Jammer | Experimental |
+| WiFi Jammer | Working |
 | RF Capture | WIP |
 | RF Replay | WIP |
 | SD Card Support | Planned |

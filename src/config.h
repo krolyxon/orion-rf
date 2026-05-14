@@ -18,24 +18,19 @@
 /////////////////cc1101 vars//////////////
 // CC1101 via FSPI
 #define cc1101_SCK 15
-#define cc1101_MISO 3
+#define cc1101_MISO 41
 #define cc1101_MOSI 35
 
 //////////////cc1101(1)//////////
-#define CC1101_CS 45
-#define CC1101_GDO0 21
-#define CC1101_GDO2 47
-
-/////////////cc1101(2)//////////
-#define CC1101_2_CS 40
-#define CC1101_2_GDO0 41
-#define CC1101_2_GDO2 42
+#define CC1101_CS 40
+#define CC1101_GDO0 39
+#define CC1101_GDO2 42
 
 // SD Card via HSPI
-#define SD_SCK 14
-#define SD_MISO 39
-#define SD_MOSI 38
-#define SD_CS 37
+//#define SD_SCK 14
+//#define SD_MISO 39
+//#define SD_MOSI 38
+//#define SD_CS 37
 
 
 // =================== Buttons ====================
@@ -45,4 +40,3 @@
 #define BTN_BACK 7
 #define BTN_LEFT 1
 #define BTN_RIGHT 2
-

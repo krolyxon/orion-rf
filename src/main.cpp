@@ -2,9 +2,9 @@
 #include <USB.h>
 #include <USBHIDKeyboard.h>
 
+#include "libs/BleMouse.h"
 #include <BLEDevice.h>
 #include <BLEScan.h>
-#include "libs/BleMouse.h"
 
 #include <RF24.h>
 #include <nRF24L01.h>
@@ -14,15 +14,14 @@
 #include <WiFi.h>
 #include <esp_wifi.h>
 
+#include <SPI.h>
 #include <esp_chip_info.h>
 #include <esp_heap_caps.h>
 #include <esp_system.h>
-#include <SPI.h>
-
 
 #include "ui/display.h"
-#include "utils/buttons.h"
 #include "ui/menu.h"
+#include "utils/buttons.h"
 
 #include "config.h"
 #include "rf/cc1101.h"
@@ -33,11 +32,9 @@ USBHIDKeyboard Keyboard;
 // ===== BLE MOUSE =====
 BleMouse bleMouse("Orion-RF", "Orion-RF", 100);
 
-
 RF24 radio1(CE1_PIN, CSN1_PIN);
 RF24 radio2(CE2_PIN, CSN2_PIN);
 SPIClass *RADIO_SPI;
-
 
 void deactivateNRF1() {
   digitalWrite(CSN1_PIN, HIGH);
@@ -49,94 +46,80 @@ void deactivateNRF2() {
   digitalWrite(CE2_PIN, LOW);
 }
 
-
 // ================= SYSTEM INFO =================
-void printSystemUsage()
-{
-    esp_chip_info_t chip_info;
+void printSystemUsage() {
+  esp_chip_info_t chip_info;
 
-    esp_chip_info(&chip_info);
+  esp_chip_info(&chip_info);
 
-    Serial.printf("CPU cores: %d\n", chip_info.cores);
+  Serial.printf("CPU cores: %d\n", chip_info.cores);
 
-    Serial.printf(
-        "Free heap: %d bytes\n",
-        heap_caps_get_free_size(MALLOC_CAP_DEFAULT)
-    );
+  Serial.printf("Free heap: %d bytes\n",
+                heap_caps_get_free_size(MALLOC_CAP_DEFAULT));
 
-    Serial.printf(
-        "PSRAM free: %d bytes\n",
-        heap_caps_get_free_size(MALLOC_CAP_SPIRAM)
-    );
+  Serial.printf("PSRAM free: %d bytes\n",
+                heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
 }
 
-void showSplash()
-{
-    u8g2.clearBuffer();
+void showSplash() {
+  u8g2.clearBuffer();
 
-    u8g2.setFont(u8g2_font_logisoso20_tr); // big font
-    u8g2.drawStr(10, 40, "Orion-RF");
+  u8g2.setFont(u8g2_font_logisoso20_tr); // big font
+  u8g2.drawStr(10, 40, "Orion-RF");
 
-    u8g2.setFont(u8g2_font_5x8_tr); // small subtitle
-    u8g2.drawStr(25, 58, "Initializing...");
+  u8g2.setFont(u8g2_font_5x8_tr); // small subtitle
+  u8g2.drawStr(25, 58, "Initializing...");
 
-    u8g2.sendBuffer();
+  u8g2.sendBuffer();
 
-    delay(1500); // 1.5 sec
+  delay(1500); // 1.5 sec
 }
-
 
 // ================= SETUP =================
-void setup()
-{
-    Serial.begin(115200);
+void setup() {
+  Serial.begin(115200);
 
-    displayInit();
-    showSplash();
+  displayInit();
+  showSplash();
 
-    buttonsInit();
-    menuInit();
+  buttonsInit();
+  menuInit();
 
-    delay(1500);
+  delay(1500);
 
-    USB.begin();
-    Keyboard.begin();
+  USB.begin();
+  Keyboard.begin();
 
+  // NRF SPI safety
+  // pinMode(CSN1_PIN, OUTPUT);
+  // digitalWrite(CSN1_PIN, HIGH);
 
+  // pinMode(CSN2_PIN, OUTPUT);
+  // digitalWrite(CSN2_PIN, HIGH);
+  deactivateNRF1();
+  deactivateNRF2();
 
-    // NRF SPI safety
-    //pinMode(CSN1_PIN, OUTPUT);
-    //digitalWrite(CSN1_PIN, HIGH);
+  RADIO_SPI = new SPIClass(FSPI);
+  RADIO_SPI->begin(NRF_SCK, NRF_MISO, NRF_MOSI);
 
-    //pinMode(CSN2_PIN, OUTPUT);
-    //digitalWrite(CSN2_PIN, HIGH);
-    deactivateNRF1();
-    deactivateNRF2();
+  // ===== CC1101 SPI INIT =====
+  // SPI.begin(
+  //    cc1101_SCK,
+  //    cc1101_MISO,
+  //    cc1101_MOSI,
+  //    CC1101_CS
+  //);
 
-    RADIO_SPI = new SPIClass(FSPI);
-    RADIO_SPI->begin(NRF_SCK, NRF_MISO, NRF_MOSI);
+  // pinMode(CC1101_CS, OUTPUT);
+  // pinMode(CC1101_2_CS, OUTPUT);
 
-    // ===== CC1101 SPI INIT =====
-    //SPI.begin(
-    //    cc1101_SCK,
-    //    cc1101_MISO,
-    //    cc1101_MOSI,
-    //    CC1101_CS
-    //);
+  // digitalWrite(CC1101_CS, HIGH);
+  // digitalWrite(CC1101_2_CS, HIGH);
 
-    //pinMode(CC1101_CS, OUTPUT);
-    //pinMode(CC1101_2_CS, OUTPUT);
+  printSystemUsage();
 
-    //digitalWrite(CC1101_CS, HIGH);
-    //digitalWrite(CC1101_2_CS, HIGH);
-
-    printSystemUsage();
-
-    Serial.println("SYSTEM READY");
+  Serial.println("SYSTEM READY");
 }
 
 // ================= LOOP =================
-void loop()
-{
-   menuLoop();
-}
+void loop() { menuLoop(); }
