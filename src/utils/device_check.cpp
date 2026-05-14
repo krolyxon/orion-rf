@@ -1,4 +1,4 @@
-#include "../libs/ELECHOUSE_CC1101_SRC_DRV.h"
+#include "ELECHOUSE_CC1101_SRC_DRV.h"
 #include <Arduino.h>
 #include <RF24.h>
 #include <SPI.h>

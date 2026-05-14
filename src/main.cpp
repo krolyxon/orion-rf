@@ -2,14 +2,14 @@
 #include <USB.h>
 #include <USBHIDKeyboard.h>
 
-#include "libs/BleMouse.h"
+#include "BleMouse.h"
 #include <BLEDevice.h>
 #include <BLEScan.h>
 
 #include <RF24.h>
 #include <nRF24L01.h>
 
-#include "libs/ELECHOUSE_CC1101_SRC_DRV.h"
+#include "ELECHOUSE_CC1101_SRC_DRV.h"
 
 #include <WiFi.h>
 #include <esp_wifi.h>

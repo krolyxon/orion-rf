@@ -1,5 +1,5 @@
-#include "../config.h"
-#include "../hid/badusb.h"
+#include "config.h"
+#include "hid/badusb.h"
 #include <Arduino.h>
 #include <BleMouse.h>
 
