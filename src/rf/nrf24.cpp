@@ -21,19 +21,19 @@ const byte zigbee_channels[] = {11, 15, 20, 25};
 const byte rc_channels[] = {1, 3, 5, 7};
 
 void initNRF(RF24 &radio) {
-  if (!radio.begin(RADIO_SPI)) {
-    Serial.println("NRF not found");
-    return;
-  }
+    if (!radio.begin(RADIO_SPI)) {
+        Serial.println("NRF not found");
+        return;
+    }
 
-  radio.setAutoAck(false);
-  radio.stopListening();
-  radio.setRetries(0, 0);
-  radio.setPALevel(RF24_PA_MAX, true);
-  radio.setDataRate(RF24_2MBPS);
-  radio.openWritingPipe(0xE7E7E7E7E7LL);
-  radio.setCRCLength(RF24_CRC_DISABLED);
-  Serial.println("NRF Initialized");
+    radio.setAutoAck(false);
+    radio.stopListening();
+    radio.setRetries(0, 0);
+    radio.setPALevel(RF24_PA_MAX, true);
+    radio.setDataRate(RF24_2MBPS);
+    radio.openWritingPipe(0xE7E7E7E7E7LL);
+    radio.setCRCLength(RF24_CRC_DISABLED);
+    Serial.println("NRF Initialized");
 }
 
 // void startBleJammer() {
@@ -110,107 +110,108 @@ void initNRF(RF24 &radio) {
 // }
 
 void startJammer(const char *name, const byte *channels, size_t channelCount) {
-  initNRF(radio1);
-  initNRF(radio2);
+    initNRF(radio1);
+    initNRF(radio2);
 
-  Serial.println("NRF JAMMER STARTED");
+    Serial.println("NRF JAMMER STARTED");
 
-  const char payload[] = "xxxxxxxxxxxxxxxx";
+    const char payload[] = "xxxxxxxxxxxxxxxx";
 
-  u8g2.clearBuffer();
-  u8g2.setFont(u8g2_font_6x10_tr);
-  u8g2.drawStr(0, 15, "NRF24 Jammer");
-  u8g2.drawStr(0, 35, name);
-  u8g2.drawStr(0, 55, "BACK = Exit");
-  u8g2.sendBuffer();
+    u8g2.clearBuffer();
+    u8g2.setFont(u8g2_font_6x10_tr);
+    u8g2.drawStr(0, 15, "NRF24 Jammer");
+    u8g2.drawStr(0, 35, name);
+    u8g2.drawStr(0, 55, "BACK = Exit");
+    u8g2.sendBuffer();
 
-  while (true) {
-    for (size_t i = 0; i < channelCount; i++) {
-      // radio1.setChannel(channels[i]);
-      // radio1.write(&payload, sizeof(payload));
+    while (true) {
+        for (size_t i = 0; i < channelCount; i++) {
+            // radio1.setChannel(channels[i]);
+            // radio1.write(&payload, sizeof(payload));
 
-      // Optional second NRF
-      // radio2.setChannel(channels[i]);
-      // radio2.write(&payload, sizeof(payload));
+            // Optional second NRF
+            // radio2.setChannel(channels[i]);
+            // radio2.write(&payload, sizeof(payload));
 
-      radio1.setChannel(channels[i]);
-      radio2.setChannel(channels[(i + 1) % channelCount]);
+            radio1.setChannel(channels[i]);
+            radio2.setChannel(channels[(i + 1) % channelCount]);
 
-      radio1.writeFast(&payload, sizeof(payload));
-      radio2.writeFast(&payload, sizeof(payload));
+            radio1.writeFast(&payload, sizeof(payload));
+            radio2.writeFast(&payload, sizeof(payload));
+        }
+
+        if (btnBack()) {
+            Serial.println("Jammer stopped");
+            radio1.powerDown();
+            radio2.powerDown();
+            return;
+        }
     }
 
-    if (btnBack()) {
-      Serial.println("Jammer stopped");
-      radio1.powerDown();
-      radio2.powerDown();
-      return;
-    }
-  }
+    // while (true) {
+    // for (size_t i = 0; i < channelCount; i++)
+    //{
+    //     radio1.setChannel(channels[i]);
+    //     radio2.setChannel(channels[(i + 1) % channelCount]);
 
-  // while (true) {
-  // for (size_t i = 0; i < channelCount; i++)
-  //{
-  //     radio1.setChannel(channels[i]);
-  //     radio2.setChannel(channels[(i + 1) % channelCount]);
+    //    radio1.writeFast(&payload, sizeof(payload));
+    //    radio2.writeFast(&payload, sizeof(payload));
 
-  //    radio1.writeFast(&payload, sizeof(payload));
-  //    radio2.writeFast(&payload, sizeof(payload));
+    //    radio1.txStandBy(1);
+    //    radio2.txStandBy(1);
 
-  //    radio1.txStandBy(1);
-  //    radio2.txStandBy(1);
+    //    delayMicroseconds(200);
+    //}
 
-  //    delayMicroseconds(200);
-  //}
+    // if (btnBack())
+    //{
+    //     Serial.println("Jammer stopped");
 
-  // if (btnBack())
-  //{
-  //     Serial.println("Jammer stopped");
+    //    radio1.powerDown();
+    //    radio2.powerDown();
 
-  //    radio1.powerDown();
-  //    radio2.powerDown();
-
-  //    return;
-  //}
-  //}
+    //    return;
+    //}
+    //}
 }
 
 void NRFToolsMenu(int index) {
-  switch (index) {
-  case 0:
-    // startBleJammer();
-    // BLE
-    startJammer("BLE", bleChannels,
-                sizeof(bleChannels) / sizeof(bleChannels[0]));
+    switch (index) {
+    case 0:
+        // startBleJammer();
+        // BLE
+        startJammer("BLE", bleChannels,
+                    sizeof(bleChannels) / sizeof(bleChannels[0]));
 
-    break;
-  case 1:
-    // startBluetoothJammer();
-    // Bluetooth
-    startJammer("Bluetooth", bluetoothChannels,
-                sizeof(bluetoothChannels) / sizeof(bluetoothChannels[0]));
-    break;
+        break;
+    case 1:
+        // startBluetoothJammer();
+        // Bluetooth
+        startJammer("Bluetooth", bluetoothChannels,
+                    sizeof(bluetoothChannels) / sizeof(bluetoothChannels[0]));
+        break;
 
-  case 2:
-    startJammer("WiFi", wifiChannels,
-                sizeof(wifiChannels) / sizeof(wifiChannels[0]));
-    break;
-  case 3:
-    startJammer("USB Wireless", usbWireless_channels,
-                sizeof(usbWireless_channels) / sizeof(usbWireless_channels[0]));
-    break;
-  case 4:
-    startJammer("Video TX", videoTransmitter_channels,
-                sizeof(videoTransmitter_channels) /
-                    sizeof(videoTransmitter_channels[0]));
-    break;
-  case 5:
-    break;
-    startJammer("RC", rc_channels,
-                sizeof(rc_channels) / sizeof(rc_channels[0]));
-    break;
-  case 6:
+    case 2:
+        startJammer("WiFi", wifiChannels,
+                    sizeof(wifiChannels) / sizeof(wifiChannels[0]));
+        break;
+    case 3:
+        startJammer("USB Wireless", usbWireless_channels,
+                    sizeof(usbWireless_channels) /
+                        sizeof(usbWireless_channels[0]));
+        break;
+    case 4:
+        startJammer("Video TX", videoTransmitter_channels,
+                    sizeof(videoTransmitter_channels) /
+                        sizeof(videoTransmitter_channels[0]));
+        break;
+    case 5:
+        break;
+        startJammer("RC", rc_channels,
+                    sizeof(rc_channels) / sizeof(rc_channels[0]));
+        break;
+    case 6:
 
-    break;
-  }
+        break;
+    }
 }

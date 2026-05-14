@@ -27,11 +27,10 @@
 #define CC1101_GDO2 42
 
 // SD Card via HSPI
-//#define SD_SCK 14
-//#define SD_MISO 39
-//#define SD_MOSI 38
-//#define SD_CS 37
-
+// #define SD_SCK 14
+// #define SD_MISO 39
+// #define SD_MOSI 38
+// #define SD_CS 37
 
 // =================== Buttons ====================
 #define BTN_UP 4

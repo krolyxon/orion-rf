@@ -1,7 +1,6 @@
 #pragma once
 
-struct Menu
-{
+struct Menu {
     const char **items;
     int size;
 };
