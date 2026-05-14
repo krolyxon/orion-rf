@@ -1,4 +1,4 @@
-#include "../ui/display.h"
+#include "ui/display.h"
 #include "buttons.h"
 #include <Arduino.h>
 #include <esp_chip_info.h>

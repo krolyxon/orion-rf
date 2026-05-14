@@ -4,8 +4,8 @@
 #include <SPI.h>
 #include <Wire.h>
 
-#include "../config.h"
-#include "../ui/display.h"
+#include "config.h"
+#include "ui/display.h"
 #include "buttons.h"
 
 // ===== EXTERNALS =====

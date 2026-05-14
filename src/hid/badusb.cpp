@@ -1,4 +1,4 @@
-#include "../ui/display.h"
+#include "ui/display.h"
 #include <Arduino.h>
 #include <USBHIDKeyboard.h>
 

@@ -1,5 +1,5 @@
 #include "buttons.h"
-#include "../config.h"
+#include "config.h"
 #include <Arduino.h>
 
 void buttonsInit() {

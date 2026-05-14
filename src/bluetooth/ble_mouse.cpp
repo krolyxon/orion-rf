@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <BleMouse.h>
 
-#include "../utils/buttons.h"
+#include "utils/buttons.h"
 #include "ui/display.h"
 
 // ===== BLE MOUSE =====

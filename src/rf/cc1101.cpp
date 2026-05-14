@@ -1,8 +1,8 @@
 #include "cc1101.h"
-#include "../config.h"
-#include "../libs/ELECHOUSE_CC1101_SRC_DRV.h"
-#include "../ui/display.h"
-#include "../utils/buttons.h"
+#include "config.h"
+#include "libs/ELECHOUSE_CC1101_SRC_DRV.h"
+#include "ui/display.h"
+#include "utils/buttons.h"
 #include "SPI.h"
 #include <Arduino.h>
 

@@ -4,8 +4,8 @@
 #include <BLEScan.h>
 #include <vector>
 
-#include "../config.h"
-#include "../utils/buttons.h"
+#include "config.h"
+#include "utils/buttons.h"
 #include "ui/display.h"
 
 // ===== DEVICE STRUCT =====

@@ -1,5 +1,5 @@
-#include "../ui/display.h"
-#include "../utils/buttons.h"
+#include "ui/display.h"
+#include "utils/buttons.h"
 #include <Arduino.h>
 #include <WiFi.h>
 

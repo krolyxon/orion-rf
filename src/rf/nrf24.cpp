@@ -1,6 +1,6 @@
 #include "nrf24.h"
-#include "../ui/display.h"
-#include "../utils/buttons.h"
+#include "ui/display.h"
+#include "utils/buttons.h"
 #include <Arduino.h>
 #include <RF24.h>
 #define JAM_DURATION 500

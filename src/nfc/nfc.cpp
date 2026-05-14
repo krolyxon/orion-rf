@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#include "../config.h"
-#include "../utils/buttons.h"
+#include "config.h"
+#include "utils/buttons.h"
 #include "ui/display.h"
 
 #define PN532_IRQ -1
