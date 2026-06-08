@@ -81,27 +81,9 @@ git clone https://github.com/krolyxon/orion-rf.git
 cd orion-rf
 ```
 
-#### Build Firmware
-
-```bash
-pio run
-```
-
-Compiled binaries will be available in:
-
-```text
-.pio/build/<environment>/
-```
-
-#### Upload to Device
+#### Build & Upload Firmware
 
 ```bash
 pio run -t upload
-```
-
-#### Monitor Serial Output
-
-```bash
-pio device monitor
 ```
 
