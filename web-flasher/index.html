@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ORION-RF Installer</title>
+
+    <script
+        type="module"
+        src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js">
+    </script>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 700px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>ORION-RF Installer</h1>
+
+<div class="card">
+    <h2>Stable Release</h2>
+
+    <p>
+        Connect your ESP32-S3 and click Install.
+    </p>
+
+    <esp-web-install-button manifest="manifest.json">
+    </esp-web-install-button>
+</div>
+
+</body>
+</html>
