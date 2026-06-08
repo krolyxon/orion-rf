@@ -3,7 +3,7 @@ name: Build and Deploy Web Flasher
 on:
   push:
     branches:
-      - main
+      - master
 
 permissions:
   contents: read
