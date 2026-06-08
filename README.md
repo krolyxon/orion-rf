@@ -53,3 +53,6 @@ Orion RF is a portable RF and wireless toolkit built on the ESP32 platform with 
 | Emulator | Planned |
 | NFC | WIP |
 
+
+# Installation
+
