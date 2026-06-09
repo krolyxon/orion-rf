@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>ORION-RF Installer</title>
+    <head>
+        <meta charset="UTF-8">
+        <title>ORION-RF Installer</title>
 
-    <script
-        type="module"
-        src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js">
-    </script>
+        <script
+                type="module"
+                src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <style>
+        <style>
         body {
             font-family: sans-serif;
             max-width: 700px;
@@ -28,102 +29,155 @@
             padding: 10px;
             margin-bottom: 20px;
         }
-    </style>
-</head>
-<body>
 
-<h1>ORION-RF Installer</h1>
+        #releaseNotes {
+            min-height: 150px;
+            max-height: 250px;
+            overflow-y: auto;
+            white-space: normal;
+            line-height: 1.5;
+        }
+        </style>
+    </head>
+    <body>
 
-<div class="card">
-    <h2>Select Firmware Version</h2>
+        <h1>ORION-RF Installer</h1>
 
-    <select id="versionSelect"></select>
+        <div class="card">
+            <h2>Select Firmware Version</h2>
 
-    <div id="installer"></div>
-</div>
+            <select id="versionSelect"></select>
 
-<script>
-const BASE_URL =
-    "https://krolyxon.github.io/orion-rf";
+            <div id="releaseNotes" style="
+                margin-bottom:20px;
+                padding:10px;
+                border:1px solid #ddd;
+                border-radius:8px;
+                white-space:pre-wrap;
+                ">
+                Loading release notes...
+            </div>
 
-async function loadVersions() {
-    const response =
-        await fetch(`${BASE_URL}/versions.json`);
+            <div id="installer"></div>
+        </div>
 
-    const versions =
-        await response.json();
+        <script>
+            const BASE_URL =
+                "https://krolyxon.github.io/orion-rf";
 
-    const select =
-        document.getElementById("versionSelect");
+            const GITHUB_OWNER = "krolyxon";
+            const GITHUB_REPO = "orion-rf";
 
-    select.innerHTML = "";
+            async function loadVersions() {
+                const response =
+                    await fetch(`${BASE_URL}/versions.json`);
 
-    versions.forEach(version => {
-        const option =
-            document.createElement("option");
+                const versions =
+                    await response.json();
 
-        option.value = version;
-        option.textContent = version;
+                const select =
+                    document.getElementById("versionSelect");
 
-        select.appendChild(option);
-    });
+                select.innerHTML = "";
 
-    buildInstaller();
-}
+                versions.forEach(version => {
+                    const option =
+                        document.createElement("option");
 
-function buildInstaller() {
-    const version =
-        document.getElementById("versionSelect").value;
+                    option.value = version;
+                    option.textContent = version;
 
-    const manifest = {
-        name: "ORION-RF",
-        version: version,
-        builds: [
-            {
-                chipFamily: "ESP32-S3",
-                parts: [
-                    {
-                        path:
-                        `${BASE_URL}/firmware/${version}/bootloader.bin`,
-                        offset: 0
-                    },
-                    {
-                        path:
-                        `${BASE_URL}/firmware/${version}/partitions.bin`,
-                        offset: 32768
-                    },
-                    {
-                        path:
-                        `${BASE_URL}/firmware/${version}/firmware.bin`,
-                        offset: 65536
-                    }
-                ]
+                    select.appendChild(option);
+                });
+
+                await updateVersion();
             }
-        ]
-    };
 
-    const blob =
-        new Blob(
-            [JSON.stringify(manifest)],
-            { type: "application/json" }
-        );
+            async function loadReleaseNotes(tag) {
+                try {
+                    const response = await fetch(
+                        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/tags/${tag}`
+                    );
 
-    const manifestUrl =
-        URL.createObjectURL(blob);
+                    if (!response.ok) {
+                        throw new Error("Release not found");
+                    }
 
-    document.getElementById("installer").innerHTML = `
-        <esp-web-install-button
-            manifest="${manifestUrl}">
-        </esp-web-install-button>
-    `;
-}
+                    const release = await response.json();
 
-document
-    .getElementById("versionSelect")
-    .addEventListener("change", buildInstaller);
+                    document.getElementById("releaseNotes").innerHTML = `
+    <h3>${release.name || release.tag_name}</h3>
+    <small>
+        Released:
+        ${new Date(release.published_at).toLocaleString()}
+    </small>
+    <hr>
+    <div>
+        ${marked.parse(
+            release.body || "No release notes provided."
+        )}
+    </div>
+`;                } catch (err) {
+    document.getElementById("releaseNotes").innerHTML =
+        "Unable to load release notes.";
+                }
+            }
 
-loadVersions();
-</script>
+            async function updateVersion() {
+                const version =
+                    document.getElementById("versionSelect").value;
 
-</body>
+                await loadReleaseNotes(version);
+
+                const manifest = {
+                    name: "ORION-RF",
+                    version: version,
+                    builds: [
+                        {
+                            chipFamily: "ESP32-S3",
+                            parts: [
+                                {
+                                    path:
+                                    `${BASE_URL}/firmware/${version}/bootloader.bin`,
+                                    offset: 0
+                                },
+                                {
+                                    path:
+                                    `${BASE_URL}/firmware/${version}/partitions.bin`,
+                                    offset: 32768
+                                },
+                                {
+                                    path:
+                                    `${BASE_URL}/firmware/${version}/firmware.bin`,
+                                    offset: 65536
+                                }
+                            ]
+                        }
+                    ]
+                };
+
+                const blob =
+                    new Blob(
+                        [JSON.stringify(manifest)],
+                        { type: "application/json" }
+                    );
+
+                const manifestUrl =
+                    URL.createObjectURL(blob);
+
+                document.getElementById("installer").innerHTML = `
+                    <esp-web-install-button
+                manifest="${manifestUrl}">
+                    </esp-web-install-button>
+                    `;
+            }
+
+            document
+                .getElementById("versionSelect")
+                .addEventListener("change", updateVersion);
+
+            loadVersions();
+        </script>
+
+    </body>
 </html>
