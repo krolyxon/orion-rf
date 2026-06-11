@@ -1,6 +1,5 @@
 <div align="center">
   <img src="assets/logo.png" width="250" alt="Orion RF Logo" />
-  <h1>📡 Orion RF</h1>
   <p>Portable RF & Wireless Toolkit for ESP32</p>
 </div>
 
