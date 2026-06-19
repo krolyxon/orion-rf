@@ -23,5 +23,8 @@ esp-idf-svc = { version = "0.52.1", features = ["critical-section", "embassy-tim
 # Remove `generic-queue-8` if you plan to use `embassy-time` WITH `embassy-executor`
 embassy-time = { version = "0.5", features = ["generic-queue-8"] }
 
+embedded-graphics = "0.8.2"
+ssd1306 = "0.10.0"
+
 [build-dependencies]
 embuild = "0.33"
