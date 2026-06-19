@@ -1,5 +1,7 @@
 # Rust firmware target
-rust/target
+/.embuild
+/target
+/Cargo.lock
 
 # Clangd cache
 .cache
