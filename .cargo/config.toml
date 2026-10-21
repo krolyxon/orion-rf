@@ -13,6 +13,9 @@ build-std = ["std", "panic_abort"]
 MCU = "esp32s3"
 ESP_IDF_VERSION = "v5.5.3"
 ESP_IDF_TOOLS_INSTALL_DIR = "workspace"
+# Replaces ~/export-esp.sh — bindgen (esp-idf-sys) needs libclang from the esp toolchain.
+# Version-pinned: update the esp-20.1.1_* segment after an `espup update`.
+LIBCLANG_PATH = "/home/k/.local/share/rustup/toolchains/esp/xtensa-esp32-elf-clang/esp-20.1.1_20250829/esp-clang/lib"
 
 # Uncomment this if you have moved the target dir by setting CARGO_TARGET_DIR or similar.
 # Required for now due to embuild limitations.
