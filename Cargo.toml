@@ -26,5 +26,10 @@ embassy-time = { version = "0.5", features = ["generic-queue-8"] }
 embedded-graphics = "0.8.2"
 ssd1306 = "0.10.0"
 
+# Explicit HAL (re-exported by esp-idf-svc, but used directly across the rewrite)
+esp-idf-hal = "0.46"
+# Shared I2C bus: one I2cDriver behind a RefCell, handed to OLED + (later) PN532
+embedded-hal-bus = "0.3"
+
 [build-dependencies]
 embuild = "0.33"
